@@ -1,4 +1,4 @@
-# Amazon SageMaker Safe Deployment Pipeline
+# Amazon SageMaker MLOps Pipeline 
 
 ## Introduction
 
@@ -41,11 +41,11 @@ Create your AWS account at [http://aws.amazon.com](http://aws.amazon.com) by fol
 
 ###  Launch the AWS CloudFormation Stack
 
-Click on the **Launch Stack** button below to launch the CloudFormation Stack to set up the SageMaker safe deployment pipeline.
+Click on the **Launch Stack** button below to launch the CloudFormation Stack to set up the SageMaker MLOps pipeline.
 
-[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateUrl=https%3A%2F%2Famazon-sagemaker-safe-deployment-pipeline.s3.amazonaws.com%2Fpipeline.yml&stackName=nyctaxi&param_GitHubBranch=master&param_GitHubRepo=amazon-sagemaker-safe-deployment-pipeline&param_GitHubUser=aws-samples&param_ModelName=nyctaxi&param_NotebookInstanceType=ml.t3.medium)
+[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateUrl=https%3A%2F%2Fsagemaker-mlops-workshop.s3.amazonaws.com%2Fpipeline.yml&stackName=customerchurn&param_GitHubBranch=master&param_GitHubRepo=sagemaker-mlops-workshop&param_GitHubUser=github-user&param_ModelName=customerchurn&param_NotebookInstanceType=ml.t3.medium)
 
-Provide a stack name eg **sagemaker-safe-deployment-pipeline** and specify the parameters
+Provide a stack name eg **sagemaker-mlops-workshop** and specify the parameters
 
 Parameters | Description
 ----------- | -----------
@@ -80,7 +80,7 @@ Launch the newly created SageMaker Notebook in your [AWS console](https://aws.am
 
 ![code-pipeline](docs/sagemaker-notebook.png)
 
-Once the notebook is running, you will be guided through a series of steps starting with downloading the  [New York City Taxi](https://registry.opendata.aws/nyc-tlc-trip-records-pds/) dataset, uploading this to an Amazon SageMaker S3 bucket along with the data source meta data to trigger a new build in the AWS CodePipeline.
+Once the notebook is running, you will be guided through a series of steps starting with downloading the  [Customer Churn]() dataset, uploading this to an Amazon SageMaker S3 bucket along with the data source meta data to trigger a new build in the AWS CodePipeline.
 
 ![code-pipeline](docs/datasource-after.png)
 
@@ -156,12 +156,12 @@ This section outlines cost considerations for running the SageMaker Safe Deploym
 
 ## Cleaning Up
 
-First delete the stacks used as part of the pipeline for deployment, training job and suggest baseline.  For a model name of **nyctaxi** that would be.
+First delete the stacks used as part of the pipeline for deployment, training job and suggest baseline.  For a model name of **customerchurn** that would be.
 
-* *nyctaxi*-devploy-prd
-* *nyctaxi*-devploy-dev
-* *nyctaxi*-training-job
-* *nyctaxi*-suggest-baseline
+* *customerchurn*-devploy-prd
+* *customerchurn*-devploy-dev
+* *customerchurn*-training-job
+* *customerchurn*-suggest-baseline
 
 Then delete the stack you created. 
 
@@ -171,5 +171,6 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 ## License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
+Apache License 2.0
+
 
