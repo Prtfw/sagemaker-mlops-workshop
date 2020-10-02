@@ -1,4 +1,4 @@
-Description: Deploy a model at Sagemaker
+Description: Deploy a model in Sagemaker
 Parameters:
   ImageRepoUri:
     Type: String

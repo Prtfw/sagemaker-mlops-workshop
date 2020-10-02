@@ -1,5 +1,5 @@
 Transform: AWS::Serverless-2016-10-31
-Description: Deploy a model at Sagemaker
+Description: Deploy a model in Sagemaker
 Parameters:
   ImageRepoUri:
     Type: String
