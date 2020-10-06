@@ -113,7 +113,7 @@ def get_prd_params(model_name, job_id, role, image_uri, kms_key_id):
     ]
     prod_params = {
         "VariantName": "prd-{}".format(model_name),
-        "ScheduleMetricName": "feature_baseline_drift_total_amount",
+        "ScheduleMetricName": " feature_baseline_drift_CustServ Calls",
         "ScheduleMetricThreshold": str("0.20"),
     }
     return {"Parameters": dict(dev_params, **prod_params)}
