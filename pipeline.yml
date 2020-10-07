@@ -730,3 +730,43 @@ Resources:
                 Condition:
                   StringEquals:
                     iam:PassedToService: sagemaker.amazonaws.com
+  ETLRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: "AWS-Glue-S3-Bucket-Access"
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "glue.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        Path: "/"
+        Policies:
+          - PolicyName: "s3_glue"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: ListObjectsInBucket
+                  Effect: Allow
+                  Action:
+                    - s3:ListBucket
+                  Resource: "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}"
+                - Sid: AllObjectActions
+                  Effect: Allow
+                  Action:
+                    - s3:*Object
+                  Resource: "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*"
+          - PolicyName: "glue_cwlogs"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                  Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "arn:aws:logs:::*"
+
