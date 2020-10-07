@@ -702,6 +702,7 @@ Resources:
                   - cloudwatch:DeleteAlarms
                   - cloudwatch:DescribeAlarms
                   - cloudwatch:PutMetricAlarm
+                  - cloudwatch:PutMetricData
                   - codedeploy:*
                   - lambda:AddPermission
                   - lambda:CreateAlias
