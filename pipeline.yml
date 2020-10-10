@@ -553,6 +553,9 @@ Resources:
                 Action:
                   - sagemaker:CreateExperiment
                   - sagemaker:CreateTrial
+                  - sagemaker:CreateDomain
+                  - sagemaker:CreateUserProfile
+                  - sagemaker:CreateApp
                   - sagemaker:DescribeEndpoint
                   - sagemaker:DescribeEndpointConfig
                   - sagemaker:DescribeMonitoringSchedule
@@ -560,6 +563,17 @@ Resources:
                   - sagemaker:InvokeEndpoint
                   - sagemaker:ListMonitoringExecutions
                   - sagemaker:Search
+                  - sagemaker:ListDomains
+                  - sagemaker:DescribeDomain
+                  - sagemaker:DescribeApp
+                  - sagemaker:ListApps
+                  - lambda:CreateFunction
+                  - ec2:CreateVpc
+                  - ec2:CreateSubnet
+                  - ec2:CreateSecurityGroup
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:CreateTags
+                  - iam:CreateServiceLinkedRole
                 Resource: "*"
               - Sid: AllowCodePipeline
                 Effect: Allow
@@ -590,6 +604,15 @@ Resources:
                 Condition:
                   StringEquals:
                     iam:PassedToService: lambda.amazonaws.com
+              - Sid: AllowPassRoleSageMaker
+                Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: "*"
+                Condition:
+                  StringEquals:
+                    iam:PassedToService: sagemaker.amazonaws.com
+                    
 
   PipelineRole:
     Type: "AWS::IAM::Role"

@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  DomainName:
+    Type: String
+    Default: tableau-mlops-ws-1
+    Description: "SageMaker Studio Domain Name. Default is tableau-mlops-ws-1."
+  InstanceType:
+    Type: String
+    Default: ml.t3.medium
+    AllowedValues:
+      - ml.t3.medium
+      - ml.t3.large
+      - ml.m5.large
+      - ml.c5.large
+    Description: "Pick an instance type. Default is ml.t3.medium"
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Default: "AWS::NoValue"
+    Description: "Select VPC"
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Default: "AWS::NoValue"
+    Description: "Select Subnet"
+Resources:
+  StudioResource:
+    Type: "Custom::SMStudio"
+    Properties:
+      ServiceToken: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:crhelper-studio-resource
+      DomainName: !Ref DomainName
+      SMExecutionRoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/mlops-customerchurn-sagemaker-role
+      InstanceType: !Ref InstanceType
+      VpcId: !Ref VpcId
+      SubnetId: !Ref SubnetId
+# Outputs:
+#   StudioDomainUrl:
+#     Value: !GetAtt StudioResource.Url
+#   StudioDomainArn:
+#     Value: !GetAtt StudioResource.Arn
+
