@@ -33,7 +33,7 @@ Following is the list of steps required to get up and running with this sample.
 
 ###  Prepare an AWS Account
 
-Create your AWS account at [http://aws.amazon.com](http://aws.amazon.com) by following the instructions on the site.
+To sign in to the AWS console, paste the hash login URL associated to your name in a browser and click “AWS Console”, then “Open AWS Console”
 
 ###  Optionally Fork this GitHub Repository and create an Access Token
  
