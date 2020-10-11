@@ -1,47 +1,4 @@
-# Delete the stack:
-#
-# aws cloudformation delete-stack --stack-name sagemaker-mlops-deployment
-#
-# Create the stack:
-#
-# aws cloudformation create-stack --stack-name sagemaker-mlops-deployment \
-#   --template-body file://pipeline.yml \
-#   --capabilities CAPABILITY_IAM \
-#   --parameters \
-#       ParameterKey=GitHubUser,ParameterValue=<GitHub Username> \
-#       ParameterKey=GitHubToken,ParameterValue=<GitHub Token> \
-#       ParameterKey=ModelName,ParameterValue=<Model Name>
-#TODO Remove Notebook instance related code / Will be using SageMaker Studio
 Description: Create an Amazon SageMaker deployment pipeline
-Metadata:
-  AWS::CloudFormation::Interface:
-    ParameterGroups:
-      - Label:
-          default: Required Parameters
-        Parameters:
-          - ModelName
-          - NotebookInstanceType
-      - Label:
-          default: Optional GitHub Parameters
-        Parameters:
-          - GitHubRepo
-          - GitHubBranch
-          - GitHubUser
-          - GitHubToken
-    ParameterLabels:
-      ModelName:
-        default: Model Name
-      NotebookInstanceType:
-        default: Notebook Instance Type
-      GitHubRepo:
-        default: GitHub Repository
-      GitHubBranch:
-        default: GitHub Branch
-      GitHubUser:
-        default: GitHub Username
-      GitHubToken:
-        default: GitHub Access Token
-
 Parameters:
   ModelName:
     Default: customerchurn
@@ -64,25 +21,21 @@ Parameters:
       - ml.m5.2xlarge
     ConstraintDescription: Must select a valid notebook instance type.
   GitHubUser:
-    Default: github-username
-    Description: Your GitHub username
+    Default: veerathp
+    Description: Github username for the public repo
     Type: String
   GitHubRepo:
     Default: sagemaker-mlops-workshop
     Type: String
     Description: Name of the GitHub repository
+  MLRepo:
+    Default: tableau-mlops-workshop
+    Type: String
+    Description: Name of the Codecommit repository
   GitHubBranch:
     Default: master
     Type: String
     Description: Name of the branch the code is located
-  GitHubToken:
-    NoEcho: true
-    Description: Github OAuthToken with access to Repo. It might look something like 9b189a1654643522561f7b3ebd44a1531a4287af. Go to https://github.com/settings/tokens
-    Type: String
-
-Conditions:
-  GitHubTokenEmpty: !Equals [!Ref GitHubToken, ""]
-
 Resources:
   KMSKey:
     Type: AWS::KMS::Key
@@ -106,7 +59,6 @@ Resources:
     Properties:
       AliasName: !Sub alias/mlops-${ModelName}
       TargetKeyId: !Ref KMSKey
-
   ArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -114,61 +66,38 @@ Resources:
       AccessControl: Private
       VersioningConfiguration:
         Status: Enabled
-
-  GitHubSecret:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Description: !Sub GitHub Secret for ${GitHubRepo}
-      KmsKeyId: !Ref KMSKey
-      SecretString: !Sub '{"username":"${GitHubUser}","password":"${GitHubToken}"}'
-
   CodeCommitRepository:
     Type: AWS::CodeCommit::Repository
-    Condition: GitHubTokenEmpty
     Properties:
-      RepositoryName: !Ref GitHubRepo
+      RepositoryName: !Ref MLRepo
       RepositoryDescription: !Sub SageMaker mlops deployment pipeline for ${ModelName}
-
   SageMakerCodeRepository:
     Type: AWS::SageMaker::CodeRepository
     Properties:
-      CodeRepositoryName: !Ref GitHubRepo
+      CodeRepositoryName: !Ref MLRepo
       GitConfig:
-        RepositoryUrl:
-          Fn::If:
-            - GitHubTokenEmpty
-            - !GetAtt CodeCommitRepository.CloneUrlHttp
-            - !Sub https://github.com/${GitHubUser}/${GitHubRepo}.git
-        Branch: !Ref GitHubBranch
-        SecretArn:
-          Fn::If:
-            - GitHubTokenEmpty
-            - !Ref "AWS::NoValue"
-            - !Ref GitHubSecret
-
+        RepositoryUrl: !GetAtt CodeCommitRepository.CloneUrlHttp
   NotebookInstanceLifecycleConfig:
     Type: AWS::SageMaker::NotebookInstanceLifecycleConfig
     Properties:
       NotebookInstanceLifecycleConfigName: !Sub ${ModelName}-lifecycle-config
       OnCreate:
         - Content:
-            Fn::If:
-              - GitHubTokenEmpty
-              - Fn::Base64:
-                  Fn::Sub: |
-                    #!/bin/bash
-                    # Clone the public github repo, and push it to a local codecommit branch
-                    export HOME=/root/
-                    echo "Configuring github for AWS credentials"
-                    git config --global credential.helper '!aws codecommit credential-helper $@'
-                    git config --global credential.UseHttpPath true
-                    cp /root/.gitconfig /home/ec2-user/ && chown ec2-user:ec2-user /home/ec2-user/.gitconfig
-                    echo "Clone the public repo and push it to codecommit repo"
-                    git clone -b ${GitHubBranch} "https://github.com/${GitHubUser}/${GitHubRepo}.git" /tmp/mlops-repo
-                    cd /tmp/mlops-repo
-                    git remote add codecommit ${CodeCommitRepository.CloneUrlHttp}
-                    git push --set-upstream codecommit ${GitHubBranch}
-              - Ref: AWS::NoValue
+            Fn::Base64:
+              Fn::Sub: |
+                #!/bin/bash
+                # Clone the public github repo, and push it to a local codecommit branch
+                export HOME=/root/
+                echo "Configuring github for AWS credentials"
+                git config --global credential.helper '!aws codecommit credential-helper $@'
+                git config --global credential.UseHttpPath true
+                cp /root/.gitconfig /home/ec2-user/ && chown ec2-user:ec2-user /home/ec2-user/.gitconfig
+                echo "Clone the public repo and push it to codecommit repo"
+                git clone --mirror "https://github.com/${GitHubUser}/${GitHubRepo}.git" /tmp/mlops-repo
+                cd /tmp/mlops-repo
+                git push --mirror ${CodeCommitRepository.CloneUrlHttp}
+                cd /home/ec2-user/SageMaker
+                rm -rf /tmp/mlops-repo
       OnStart:
         - Content:
             Fn::Base64:
@@ -178,7 +107,7 @@ Resources:
                 echo "export ARTIFACT_BUCKET=${ArtifactBucket}" >> /etc/profile.d/jupyter-env.sh
                 echo "export PIPELINE_NAME=${ModelName}" >> /etc/profile.d/jupyter-env.sh
                 echo "export MODEL_NAME=${ModelName}" >> /etc/profile.d/jupyter-env.sh
-
+                
   NotebookInstance:
     Type: AWS::SageMaker::NotebookInstance
     Properties:
@@ -286,32 +215,17 @@ Resources:
       Stages:
         - Name: Source
           Actions:
-            - Fn::If:
-                - GitHubTokenEmpty
-                - Name: GitSource
-                  ActionTypeId:
-                    Category: Source
-                    Owner: AWS
-                    Version: "1"
-                    Provider: CodeCommit
-                  Configuration:
-                    RepositoryName: !Ref GitHubRepo
-                    BranchName: !Ref GitHubBranch
-                  OutputArtifacts:
-                    - Name: ModelSourceOutput
-                - Name: GitSource
-                  ActionTypeId:
-                    Category: Source
-                    Owner: ThirdParty
-                    Version: "1"
-                    Provider: GitHub
-                  OutputArtifacts:
-                    - Name: ModelSourceOutput
-                  Configuration:
-                    Owner: !Ref GitHubUser
-                    Repo: !Ref GitHubRepo
-                    Branch: !Ref GitHubBranch
-                    OAuthToken: !Ref GitHubToken
+            - Name: GitSource
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: "1"
+                Provider: CodeCommit
+              Configuration:
+                RepositoryName: !Ref MLRepo
+                BranchName: master
+              OutputArtifacts:
+                - Name: ModelSourceOutput
             - Name: DataSource
               ActionTypeId:
                 Category: Source
@@ -448,10 +362,9 @@ Resources:
                 TemplateConfiguration: BuildOutput::template-model-prd.json
                 TemplatePath: BuildOutput::template-model-prd.yml
               RunOrder: 1
-
   CodeCommitPolicy:
     Type: AWS::IAM::Policy
-    Condition: GitHubTokenEmpty
+    # Condition: GitHubTokenEmpty
     Properties:
       PolicyName: !Sub mlops-${ModelName}-codecommit-policy
       PolicyDocument:
@@ -568,11 +481,11 @@ Resources:
                   - sagemaker:DescribeApp
                   - sagemaker:ListApps
                   - lambda:CreateFunction
-                  - ec2:CreateVpc
-                  - ec2:CreateSubnet
-                  - ec2:CreateSecurityGroup
-                  - ec2:AuthorizeSecurityGroupIngress
-                  - ec2:CreateTags
+                  # - ec2:CreateVpc
+                  # - ec2:CreateSubnet
+                  # - ec2:CreateSecurityGroup
+                  # - ec2:AuthorizeSecurityGroupIngress
+                  # - ec2:CreateTags
                   - iam:CreateServiceLinkedRole
                 Resource: "*"
               - Sid: AllowCodePipeline
