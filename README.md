@@ -65,17 +65,17 @@ Open the`sagemaker-mlops.ipynb` notebook in the SageMaker notebook instance. (Yo
 
 ![code-pipeline](docs/sm-notebook.png)
 
-Once the notebook is running, you will be guided through a series of steps starting with downloading the  [Customer Churn]() dataset, uploading this to an Amazon SageMaker S3 bucket along with the data source meta data to trigger a new build in the AWS CodePipeline. The notebook also shows how you can do ETL step using AWS Glue
+Once the notebook is running, you will be guided through a series of steps starting with an ETL step using AWS Glue and uploading the customer churn dataset to an Amazon SageMaker S3 bucket along with the data source meta data to trigger a new build in the AWS CodePipeline. 
 
 ![code-pipeline](docs/datasource-after.png)
 
-Once your pipeline is kicked off it will run model training and deploy a development SageMaker Endpoint.  
+Once your pipeline is kicked off, it will run the model training and deploy a development endpoint in SageMaker.  
 
-There is a manual approval step which you can approve directly within the SageMaker Notebook to promote  to production, send some traffic to the live endpoint and create a REST API.
+There is a manual approval step which you can approve directly within the SageMaker Notebook to promote the endpoint to production, send some traffic to the live endpoint and create a REST API.
 
 ![code-pipeline](docs/cloud-formation.png)
 
-Subsequent deployments of the pipeline will use AWS CodeDeploy to perform a blue/green deployment to shift traffic from the Original to Replacement endpoint over a period of 5 minutes.
+Subsequent deployments of the pipeline will use AWS CodeDeploy to perform a blue/green deployment to shift traffic from the Original to the new endpoint over a period of 5 minutes.
 
 ![code-pipeline](docs/code-deploy.gif)
 
@@ -83,7 +83,7 @@ Finally, the SageMaker Notebook provides the ability to retrieve the results fro
 
 ###  Approximate Times:
 
-Following is a lis of approximate running times fo the pipeline
+Following is a list of approximate running times for the pipeline
 
 * Full Pipeline: 30 minutes
 * Start Build: 2 Minutes
