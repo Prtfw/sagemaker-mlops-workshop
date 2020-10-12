@@ -131,7 +131,7 @@ If you haven't created an IAM group for the endusers, see  [Grant Permissions to
 
 ### <b>Step 7: Discover and launch the Amazon SageMaker Studio </b>
 
-To verify that the end user can access the end user console, you will need to login as that user and access the service catalog console to launch the product
+To verify that the end user can access the end user console, you will need to login as that user and access the service catalog console to launch the product. 
 For this lab, we will access the product by clicking on the product link. Click on the "Studio" product and click "Launch Product"
 
 
