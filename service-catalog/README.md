@@ -152,6 +152,19 @@ If you haven't created an IAM group for the endusers, see  [Grant Permissions to
 To verify that the end user can access the end user console, you will need to login as that user and access the service catalog console to launch the product. 
 For this lab, we will access the product by clicking on the product link. Click on the "Studio" product and click "Launch Product"
 
+After the sucessful creation of the studio, you can add a user by clicking "Add user" link (Enter a username and select the execution role as mlops-customerchurn-sagemaker-role). Once the user is created, you can navigate to the studio IDE by clicking on the "Open Studio" link.
+
+In the Studio IDE, Click on the File->New->Terminal Menu. In the terminal window, execute the following commands to connect and clone the CodeCommit repository
+
+```
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
+git clone https://git-codecommit.us-west-2.amazonaws.com/v1/repos/tableau-mlops-workshop
+
+```
+
+Open the "sagemaker-mlops.ipynb" notebook and select "Python 3 (Data Science)" Kernel for executing the code in the notebook.
+
 
 
 
