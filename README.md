@@ -81,7 +81,7 @@ Subsequent deployments of the pipeline will use AWS CodeDeploy to perform a blue
 
 Finally, the SageMaker Notebook provides the ability to retrieve the results from the Monitoring Schedule that is run on the hour.
 
-###  Approximate Duration:
+s###  Approximate Duration:
 
 Following is a list of approximate running times for the pipeline
 
@@ -140,6 +140,10 @@ This section outlines cost considerations for running the SageMaker MLOps Deploy
   - The two `ml.m5.large` instances for production *hosting* endpoint costs 2 x $0.134 per hour.
   - The `ml.m5.xlarge` instance for the hourly scheduled *monitoring* job costs $0.269 an hour.
 - **S3** – Prices Vary, depends on size of model/artifacts stored. For first 50 TB each month, costs only $0.023 per GB stored. For more information, see [Amazon S3 Pricing](https://aws.amazon.com/s3/pricing/).
+
+### Lab 2: Provision self-service, governed ML development environments
+
+- [Lab 2](service-catalog/README.md)
 
 ## Cleaning Up
 
