@@ -20,7 +20,14 @@ Below are the tasks required to add a product to a portfolio and distribute it t
 
 ### <b>Prerequisite: Create the lambda function using the studio.zip</b>
 
+<b>Note:</b><br/>
+
+Alternatively, you can also use the  template file "template-product.yml" from the service-catalog folder as a template while creating the proudct in Step 3 below. This template will create both the lambda function and the SageMaker Studio. If you are using this file for creating the product in Step 3, do not run the Prerequisite steps (shell commands) below  
+------
+
 Navigate to the "studio/studio_function" folder using the terminal on the SageMaker notebook instance. execute the following commands. This will create the custom function that launches the studio resource
+
+
 
 ```
 zip -r ../studio.zip ./
@@ -35,6 +42,8 @@ aws lambda create-function \
     --region us-west-2
 
 ```
+-------
+
 
 ### <b>Step 1: Download the AWS CloudFormation Template</b>
 In the SageMaker Notebook Instance that was created as part of the MLOps Stack, using the jupyter inteface download the create-studio-resource.yml file from the "studio" folder to your local machine. 
@@ -45,6 +54,7 @@ In the SageMaker Notebook Instance that was created as part of the MLOps Stack, 
 ### <b>Step 3: Create an AWS Service Catalog Product</b>
 
 ![sc-create-portfolio](../docs/sc-create-product.png)
+
 
 ### <b>Step 4: Add a Template Constraint to Limit Instance Size</b>
 
@@ -164,6 +174,7 @@ git clone https://git-codecommit.us-west-2.amazonaws.com/v1/repos/tableau-mlops-
 ```
 
 Open the "sagemaker-mlops.ipynb" notebook and select "Python 3 (Data Science)" Kernel for executing the code in the notebook.
+
 
 
 
