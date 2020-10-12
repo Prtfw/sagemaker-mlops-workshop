@@ -41,7 +41,7 @@ To sign in to the AWS console, paste the hash login URL associated to your name 
 
 Click on the **Launch Stack** button below to launch the CloudFormation Stack to set up the SageMaker MLOps pipeline.
 
-[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateUrl=https%3A%2F%2Fmahendra-ml-ops-workshop.s3.amazonaws.com%2Fpipeline.yml&stackName=tableau-mlops-ws&param_GitHubBranch=master&param_GitHubRepo=sagemaker-mlops-workshop&param_GitHubUser=veerathp&param_MLRepo==tableau-mlops-workshop&param_ModelName=customerchurn&param_NotebookInstanceType=ml.t3.medium
+[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateUrl=https%3A%2F%2Fmahendra-ml-ops-workshop.s3.amazonaws.com%2Fpipeline.yml&stackName=tableau-mlops-ws&param_GitHubBranch=master&param_GitHubRepo=sagemaker-mlops-workshop&param_GitHubUser=veerathp&param_MLRepo=tableau-mlops-workshop&param_ModelName=customerchurn&param_NotebookInstanceType=ml.t3.medium
 )
 
 Parameters | Description
