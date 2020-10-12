@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  DomainName:
+    Type: String
+    Default: tableau-mlops-ws-1
+    Description: "SageMaker Studio Domain Name. Default is tableau-mlops-ws-1."
+  InstanceType:
+    Type: String
+    Default: ml.t3.medium
+    AllowedValues:
+      - ml.t3.medium
+      - ml.t3.large
+      - ml.m5.large
+      - ml.c5.large
+    Description: "Pick an instance type. Default is ml.t3.medium"
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Default: "AWS::NoValue"
+    Description: "Select VPC"
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Default: "AWS::NoValue"
+    Description: "Select Subnet"
+Resources:
+  CreateStudioFn:
+      Type: "AWS::Lambda::Function"
+      Properties:
+        FunctionName: create-smstudio-fn
+        Handler: lambda_function.handler
+        MemorySize: 512
+        Role: !Sub arn:aws:iam::${AWS::AccountId}:role/mlops-customerchurn-sagemaker-role
+        Runtime: python3.7
+        Timeout: 900
+        Code:
+          S3Bucket: !Sub mlops-customerchurn-artifact-${AWS::Region}-${AWS::AccountId}
+          S3Key: create-studio/studio.zip
+
+        Description: "Function that creates SageMaker Studio for use from custom resource template"
+
+  StudioResource:
+    DependsOn: CreateStudioFn
+    Type: "Custom::SMStudio"
+    Properties:
+      ServiceToken: !GetAtt CreateStudioFn.Arn
+      DomainName: !Ref DomainName
+      SMExecutionRoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/mlops-customerchurn-sagemaker-role
+      InstanceType: !Ref InstanceType
+      VpcId: !Ref VpcId
+      SubnetId: !Ref SubnetId
+# Outputs:
+#   StudioDomainUrl:
+#     Value: !GetAtt StudioResource.Url
+#   StudioDomainArn:
+#     Value: !GetAtt StudioResource.Arn
+
