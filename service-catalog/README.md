@@ -22,7 +22,10 @@ Below are the tasks required to add a product to a portfolio and distribute it t
 
 <b>Note:</b><br/>
 
-Alternatively, you can also use the  template file "template-product.yml" from the service-catalog folder as a template while creating the proudct in Step 3 below. This template will create both the lambda function and the SageMaker Studio. If you are using this file for creating the product in Step 3, do not run the Prerequisite steps (shell commands) below  
+Alternatively, you can also use the  template file "template-product.yml" from the service-catalog folder while creating the proudct in Step 3 below. This template will create both the lambda function and the SageMaker Studio. If you are using this file for creating the product in Step 3, do not run the Prerequisite steps (shell commands) below. This file expects the studio.zip to be available at the "create-studio" folder inside the artifact S3 bucket in your account:
+
+mlops-customerchurn-artifact-${AWS::Region}-${AWS::AccountId}
+
 ------
 
 Navigate to the "studio/studio_function" folder using the terminal on the SageMaker notebook instance. execute the following commands. This will create the custom function that launches the studio resource
