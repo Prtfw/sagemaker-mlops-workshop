@@ -1,0 +1,12 @@
+{
+    "Rules": {
+      "Rule1": {
+        "Assertions": [
+          {
+            "Assert" : {"Fn::Contains": [["ml.t3.medium", "ml.t3.large", "ml.m5.large", "ml.c5.large"], {"Ref": "InstanceType"}]},
+            "AssertDescription": "Instance type should be t3.medium, t3.large,m5.large or c5.large"
+          }
+        ]
+      }
+    }
+  }
