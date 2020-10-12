@@ -18,6 +18,22 @@ Below are the tasks required to add a product to a portfolio and distribute it t
 6. Grant End Users Access to the Portfolio
 7. Discover and launch the Amazon SageMaker Studio 
 
+### <b>Prerequisite: Create the lambda function using the studio.zip</b>
+
+Navigate to the "studio" folder using the terminal on the SageMaker notebook instance. Using the following aws cli command, create the custom function that creates the studio resource
+
+```
+aws lambda create-function \
+    --function-name "crhelper-studio-resource" \
+    --handler "lambda_function.handler" \
+    --timeout 900 \
+    --zip-file fileb://./studio.zip \
+    --runtime python3.7 \
+    --role "arn:aws:iam::{ReplaceAccountNumberHere}:role/mlops-customerchurn-sagemaker-role"\
+    --region us-west-2
+
+```
+
 ### <b>Step 1: Download the AWS CloudFormation Template</b>
 In the SageMaker Notebook Instance that was created as part of the MLOps Stack, using the jupyter inteface download the create-studio-resource.yml file from the "studio" folder to your local machine. 
 
