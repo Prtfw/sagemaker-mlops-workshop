@@ -20,7 +20,7 @@ Below are the tasks required to add a product to a portfolio and distribute it t
 
 ### <b>Prerequisite: Create the lambda function using the studio.zip</b>
 
-Navigate to the "studio" folder using the terminal on the SageMaker notebook instance. Using the following aws cli command, create the custom function that creates the studio resource
+Navigate to the "studio" folder using the terminal on the SageMaker notebook instance. Using the following aws cli command, create the custom function that launches the studio resource
 
 ```
 aws lambda create-function \
