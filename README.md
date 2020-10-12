@@ -81,7 +81,7 @@ Subsequent deployments of the pipeline will use AWS CodeDeploy to perform a blue
 
 Finally, the SageMaker Notebook provides the ability to retrieve the results from the Monitoring Schedule that is run on the hour.
 
-s###  Approximate Duration:
+###  Approximate Duration:
 
 Following is a list of approximate running times for the pipeline
 
