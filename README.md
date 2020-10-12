@@ -81,7 +81,7 @@ Subsequent deployments of the pipeline will use AWS CodeDeploy to perform a blue
 
 Finally, the SageMaker Notebook provides the ability to retrieve the results from the Monitoring Schedule that is run on the hour.
 
-###  Approximate Times:
+###  Approximate Duration:
 
 Following is a list of approximate running times for the pipeline
 
@@ -118,7 +118,7 @@ Edit the `get_training_params` method in the `model/run.py` script that is run a
 
 Extend the AWS Lambda hooks in `api/pre_traffic_hook.py` and `api/post_traffic_hook.py` to add your own validation or inference against the deployed Amazon SageMaker endpoints.  Also you can edit the `api/app.py` lambda to add any enrichment or transformation to the request/response payload.
 
-## Running Costs
+## Approximate costs for running the workshop
 
 This section outlines cost considerations for running the SageMaker MLOps Deployment Pipeline.  Completing the pipeline will deploy development and production SageMaker endpoints which will cost less than $10 per day. Further cost breakdowns are below.
 
