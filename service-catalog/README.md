@@ -1,4 +1,4 @@
-# Tableau Amazon SageMaker MLOps Workshop - MLOps Governance at Scale
+# Provision self-service, governed ML development environments 
 
 ## Introduction
 
