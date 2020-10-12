@@ -1,9 +1,10 @@
-zip -r ./studio.zip ./studio_function/
+zip -r ../studio.zip ./
+
 aws lambda create-function \
     --function-name "crhelper-studio-resource" \
     --handler "lambda_function.handler" \
     --timeout 900 \
-    --zip-file fileb://./studio.zip \
+    --zip-file fileb://../studio.zip \
     --runtime python3.7 \
     --role "arn:aws:iam::{ReplaceAccountNumberHere}:role/mlops-customerchurn-sagemaker-role" \
     --region us-west-2
