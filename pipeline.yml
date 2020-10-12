@@ -599,12 +599,20 @@ Resources:
                   Effect: Allow
                   Action:
                     - s3:ListBucket
-                  Resource: !Sub "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}"
+                  Resource:
+                      - !Sub arn:aws:s3:::${ArtifactBucket}/*
+                      - !Sub arn:aws:s3:::${ArtifactBucket}
+                      - !Sub arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*
+                      - !Sub arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}
                 - Sid: AllObjectActions
                   Effect: Allow
                   Action:
                     - s3:*Object
-                  Resource: !Sub "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*"
+                  Resource:
+                      - !Sub arn:aws:s3:::${ArtifactBucket}/*
+                      - !Sub arn:aws:s3:::${ArtifactBucket}
+                      - !Sub arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*
+                      - !Sub arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}
           - PolicyName: "glue_cwlogs"
             PolicyDocument:
               Version: "2012-10-17"
