@@ -395,7 +395,6 @@ Resources:
               - s3:ListBucket
               - s3:PutObject
             Resource:
-              - arn:aws:s3:::pv-tableau-mlops-workshop/*
               - !Sub arn:aws:s3:::${ArtifactBucket}/*
               - !Sub arn:aws:s3:::${ArtifactBucket}
               - !Sub arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*
@@ -487,6 +486,9 @@ Resources:
                   # - ec2:AuthorizeSecurityGroupIngress
                   # - ec2:CreateTags
                   - iam:CreateServiceLinkedRole
+                  - glue:CreateJob
+                  - glue:StartJobRun
+                  - glue:GetJobRun
                 Resource: "*"
               - Sid: AllowCodePipeline
                 Effect: Allow
@@ -525,6 +527,14 @@ Resources:
                 Condition:
                   StringEquals:
                     iam:PassedToService: sagemaker.amazonaws.com
+              - Sid: AllowPassRoleGlue
+                Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: "arn:aws:iam::*:role/AWS-Glue-S3-Bucket-Access"
+                Condition:
+                  StringEquals:
+                    iam:PassedToService: glue.amazonaws.com
                     
 
   PipelineRole:
@@ -566,6 +576,45 @@ Resources:
                 Action:
                   - iam:PassRole
                 Resource: !GetAtt MLOpsRole.Arn
+  ETLRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: "AWS-Glue-S3-Bucket-Access"
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "glue.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        Path: "/"
+        Policies:
+          - PolicyName: "s3_glue"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: ListObjectsInBucket
+                  Effect: Allow
+                  Action:
+                    - s3:ListBucket
+                  Resource: !Sub "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}"
+                - Sid: AllObjectActions
+                  Effect: Allow
+                  Action:
+                    - s3:*Object
+                  Resource: !Sub "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*"
+          - PolicyName: "glue_cwlogs"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                  Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "arn:aws:logs:::*"
 
   MLOpsRole:
     Type: "AWS::IAM::Role"
@@ -666,43 +715,5 @@ Resources:
                 Condition:
                   StringEquals:
                     iam:PassedToService: sagemaker.amazonaws.com
-  ETLRole:
-      Type: "AWS::IAM::Role"
-      Properties:
-        RoleName: "AWS-Glue-S3-Bucket-Access"
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Principal:
-                Service:
-                  - "glue.amazonaws.com"
-              Action:
-                - "sts:AssumeRole"
-        Path: "/"
-        Policies:
-          - PolicyName: "s3_glue"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Sid: ListObjectsInBucket
-                  Effect: Allow
-                  Action:
-                    - s3:ListBucket
-                  Resource: "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}"
-                - Sid: AllObjectActions
-                  Effect: Allow
-                  Action:
-                    - s3:*Object
-                  Resource: "arn:aws:s3:::sagemaker-${AWS::Region}-${AWS::AccountId}/*"
-          - PolicyName: "glue_cwlogs"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                  Effect: Allow
-                  Action:
-                    - logs:CreateLogGroup
-                    - logs:CreateLogStream
-                    - logs:PutLogEvents
-                  Resource: "arn:aws:logs:::*"
+  
 
