@@ -34,6 +34,6 @@ train_data.write.save(train_path, format='csv', mode='overwrite')
 val_data.write.save(val_path, format='csv', mode='overwrite')
 
 #logger.info("train_path" + train_path)
-
+#TODO: data_source.zip creation and copy to s3 bucket from the ETL Process(Currently it is done from the notebook)
 #Complete the job.
 job.commit()
