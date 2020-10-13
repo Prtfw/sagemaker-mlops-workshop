@@ -49,15 +49,25 @@ aws lambda create-function \
 
 
 ### <b>Step 1: Download the AWS CloudFormation Template</b>
-In the SageMaker Notebook Instance that was created as part of the MLOps Stack, using the jupyter inteface download the create-studio-resource.yml file from the "studio" folder to your local machine. 
+In the SageMaker Notebook Instance that was created as part of the MLOps Stack, using the jupyter interface download the create-studio-resource.yml file from the "studio" folder to your local machine. 
 
 ### <b>Step 2: Create an AWS Service Catalog Portfolio</b>
+
 ![sc-create-portfolio](../docs/sc-create-portfolio.png)
 
 ### <b>Step 3: Create an AWS Service Catalog Product</b>
 
-![sc-create-portfolio](../docs/sc-create-product.png)
+To create a product, click on the portfolio name, In the portfolio details page, click on "Upload new product"
 
+Provide the product details
+
+![sc-create-portfolio](../docs/sc-product-details.png)
+
+
+In the version details section, choose the "Use a template file method" and upload the template file downloaded in step 1. Fill in a Version title and click "Review". In the Review product details page, click "Create product"
+
+
+![sc-create-portfolio](../docs/sc-product-version-details.png)
 
 ### <b>Step 4: Add a Template Constraint to Limit Instance Size</b>
 
