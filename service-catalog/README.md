@@ -64,7 +64,7 @@ Provide the product details
 ![sc-create-portfolio](../docs/sc-product-details.png)
 
 
-In the version details section, choose the "Use a template file method" and upload the template file downloaded in step 1. Fill in a Version title and click "Review". In the Review product details page, click "Create product"
+In the version details section, choose the "Use a template file" method and upload the template file downloaded in step 1. Fill in a Version title and click "Review". In the Review product details page, click "Create product"
 
 
 ![sc-create-portfolio](../docs/sc-product-version-details.png)
