@@ -167,13 +167,12 @@ Now that you have created a portfolio and added a product, you are ready to gran
 
 Prerequisites:
 
-If you haven't created an IAM group for the endusers, see  [Grant Permissions to AWS Service Catalog End Users](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/getstarted-iamenduser.html). For this lab, we will use the "TeamRole" that has the permissions
-
+If you haven't created an IAM group for the endusers, see  [Grant Permissions to AWS Service Catalog End Users](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/getstarted-iamenduser.html). For this lab, we will use the "TeamRole" that has the permissions. To add the role, in the "Groups,roles and users" tab click "Add groups,roles,users" button select "TeamRole" in the Roles tab. 
 
 ### <b>Step 7: Discover and launch the Amazon SageMaker Studio </b>
 
 To verify that the end user can access the end user console, you will need to login as that user and access the service catalog console to launch the product. 
-For this lab, we will access the product by clicking on the product link. Click on the "Studio" product and click "Launch Product"
+For this lab, we will access the product in the admin user session by clicking on the product link. Click on the "Studio" product and click "Launch Product"
 
 After the sucessful creation of the studio, you can add a user by clicking "Add user" link (Enter a username and select the execution role as mlops-customerchurn-sagemaker-role). Once the user is created, you can navigate to the studio IDE by clicking on the "Open Studio" link.
 
