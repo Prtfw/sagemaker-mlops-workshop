@@ -167,7 +167,7 @@ Now that you have created a portfolio and added a product, you are ready to gran
 
 Prerequisites:
 
-If you haven't created an IAM group for the endusers, see  [Grant Permissions to AWS Service Catalog End Users](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/getstarted-iamenduser.html). For this lab, we will use the "TeamRole" that has the permissions. To add the role, in the "Groups,roles and users" tab click "Add groups,roles,users" button select "TeamRole" in the Roles tab. 
+If you haven't created an IAM group for the endusers, see  [Grant Permissions to AWS Service Catalog End Users](https://docs.aws.amazon.com/servicecatalog/latest/adminguide/getstarted-iamenduser.html). For this lab, we will use the "TeamRole" that has the permissions. To add the role, in the "Groups,roles and users" tab click "Add groups,roles,users" button select "TeamRole" in the Roles tab and click "Add access" 
 
 ### <b>Step 7: Discover and launch the Amazon SageMaker Studio </b>
 
